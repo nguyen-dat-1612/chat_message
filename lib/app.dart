@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'logic/blocs/bloc_observer.dart';
 import 'main.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  final username = prefs.getString('username');
-  final token = prefs.getString('token');
-
-  runApp(MyApp(initialUsername: username, initialToken: token));
+  Bloc.observer = SimpleBlocObserver();
+  runApp(MyApp());
 }
