@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_message_websocket/data/repositories/user_repository.dart';
 import 'package:chat_message_websocket/data/repositories/conversation_repository.dart';
-import 'package:chat_message_websocket/services/WebSocketService.dart';
-import 'package:chat_message_websocket/logic/blocs/user/home_bloc.dart';
-import 'package:chat_message_websocket/logic/blocs/user/home_event.dart';
-import 'package:chat_message_websocket/logic/blocs/user/home_state.dart';
+import 'package:chat_message_websocket/services/websocket_service.dart';
+import 'package:chat_message_websocket/logic/blocs/home/home_bloc.dart';
+import 'package:chat_message_websocket/logic/blocs/home/home_event.dart';
+import 'package:chat_message_websocket/logic/blocs/home/home_state.dart';
 import 'package:chat_message_websocket/logic/blocs/conversation/conversation_bloc.dart';
 import 'package:chat_message_websocket/logic/blocs/contact/contact_bloc.dart';
 import 'package:chat_message_websocket/presentation/screens/conversation_list_screen.dart';
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
 
           if (state is UserFailure) {
-            return Center(child: Text('Lỗi tải thông tin user: ${state.err}'));
+            return Center(child: Text('Lỗi tải thông tin home: ${state.err}'));
           }
 
           return const Scaffold(

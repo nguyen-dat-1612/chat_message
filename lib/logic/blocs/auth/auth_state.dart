@@ -17,15 +17,17 @@ class AuthLoading extends AuthState {
 
 class AuthLoginSuccess extends AuthState {
   final LoginResponse loginRes;
-  const AuthLoginSuccess(this.loginRes);
+  const AuthLoginSuccess({required this.loginRes});
   @override
   List<Object?> get props => [loginRes];
 }
 
 class AuthRegisterSuccess extends AuthState {
-  const AuthRegisterSuccess();
+  final LoginResponse registerRes;
+
+  const AuthRegisterSuccess({required this.registerRes});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [registerRes];
 }
 
 class AuthLogoutSuccess extends AuthState {

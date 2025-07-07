@@ -1,4 +1,4 @@
-import 'package:chat_message_websocket/services/WebSocketService.dart';
+import 'package:chat_message_websocket/services/websocket_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'home_event.dart';
 import 'home_state.dart';

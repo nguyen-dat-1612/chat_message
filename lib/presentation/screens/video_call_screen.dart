@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import '../../services/WebSocketService.dart';
+import '../../services/websocket_service.dart';
 import '../../core/utils/logger.dart';
 
 class VideoCallScreen extends StatefulWidget {
@@ -141,7 +141,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
 
       _localStream = await navigator.mediaDevices.getUserMedia({
         'audio': true,
-        'video': {'facingMode': 'user'},
+        'video': {'facingMode': 'home'},
       });
       _localRenderer.srcObject = _localStream;
 

@@ -13,7 +13,7 @@ class LoginResponse {
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
-      user: User.fromJson(json['user']),
+      user: User.fromJson(json['home']),
       accessToken: json['accessToken'],
       refreshToken: json['refreshToken'],
     );

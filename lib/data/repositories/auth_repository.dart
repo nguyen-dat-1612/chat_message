@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants/constants.dart';
 import '../../core/utils/exceptions.dart';
+import '../../core/utils/logger.dart';
 import '../models/login_response.dart';
 
 class AuthRepository {
@@ -44,7 +45,7 @@ class AuthRepository {
     }
   }
 
-  Future<void> register({
+  Future<LoginResponse> register({
     required String username,
     required String email,
     required String password,
@@ -52,7 +53,7 @@ class AuthRepository {
   })  async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/register'),
+        Uri.parse('$baseUrl/auth/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': username,
@@ -63,9 +64,15 @@ class AuthRepository {
       );
       final data = jsonDecode(response.body);
 
+      logger.d("Data register response: $data");
       if (response.statusCode == 201) {
         if (data['success'] == true) {
-          return;
+          final loginRes = LoginResponse.fromJson(data['data']);
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('accessToken', loginRes.accessToken);
+          await prefs.setString('refreshToken', loginRes.refreshToken);
+          await prefs.setString('username', username);
+          return loginRes;
         } else {
           throw ServerException(message: data['message'] ?? 'Register failed');
         }

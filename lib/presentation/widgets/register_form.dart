@@ -37,8 +37,6 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Form(
       key: _formKey,
       child: Column(
@@ -86,7 +84,7 @@ class _RegisterFormState extends State<RegisterForm> {
           BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is AuthRegisterSuccess) {
-                context.goNamed('login');
+                context.goNamed('home');
               } else if (state is AuthFailure) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

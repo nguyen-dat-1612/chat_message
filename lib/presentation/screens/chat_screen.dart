@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:chat_message_websocket/data/models/message_type.dart';
 import 'package:chat_message_websocket/logic/blocs/call/call_state.dart';
 import 'package:chat_message_websocket/presentation/screens/video_call_screen.dart';
-import 'package:chat_message_websocket/services/WebSocketService.dart';
+import 'package:chat_message_websocket/services/websocket_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../logic/blocs/chat/chat_bloc.dart';

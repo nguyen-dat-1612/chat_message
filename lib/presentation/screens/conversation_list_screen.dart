@@ -8,7 +8,7 @@ import '../../logic/blocs/contact/contact_state.dart';
 import '../../logic/blocs/conversation/conversation_bloc.dart';
 import '../../logic/blocs/conversation/conversation_event.dart';
 import '../../logic/blocs/conversation/conversation_state.dart';
-import '../../services/WebSocketService.dart';
+import '../../services/websocket_service.dart';
 import '../widgets/conversation_item.dart';
 import '../widgets/search_user_bar.dart';
 

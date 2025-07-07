@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/simple_user.dart';
-import '../../../services/WebSocketService.dart';
+import '../../../services/websocket_service.dart';
 import 'contact_event.dart';
 import 'contact_state.dart';
 

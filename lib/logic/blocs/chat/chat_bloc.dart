@@ -2,7 +2,7 @@ import 'package:chat_message_websocket/data/repositories/message_repository.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/message.dart';
-import '../../../services/WebSocketService.dart';
+import '../../../services/websocket_service.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
 

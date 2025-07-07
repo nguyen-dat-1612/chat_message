@@ -36,7 +36,7 @@ class UserRepository {
       if (data['success'] == true) {
         return User.fromJson(data['data']);
       } else {
-        throw ServerException(message: data['message'] ?? 'Get user profile failed');
+        throw ServerException(message: data['message'] ?? 'Get home profile failed');
       }
     } on FormatException {
       throw ServerException(message: 'Invalid response format');

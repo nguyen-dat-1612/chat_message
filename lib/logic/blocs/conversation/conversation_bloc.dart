@@ -1,6 +1,6 @@
 
 import 'package:chat_message_websocket/data/repositories/conversation_repository.dart';
-import 'package:chat_message_websocket/services/WebSocketService.dart';
+import 'package:chat_message_websocket/services/websocket_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/simple_user.dart';

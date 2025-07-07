@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chat_message_websocket/core/utils/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/utils/exceptions.dart';
 import '../../../data/repositories/auth_repository.dart';
@@ -23,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         username: event.username,
         password: event.password,
       );
-      emit(AuthLoginSuccess(loginRes));
+      emit(AuthLoginSuccess(loginRes: loginRes));
     } catch (e) {
       if (e is ServerException) {
         emit(AuthFailure(e.message));
@@ -33,18 +34,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  FutureOr<void> _onRegister(RegisterEvent event, Emitter<AuthState> emit) {
+  FutureOr<void> _onRegister(RegisterEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      authRepository.register(
+      final registerRes = await authRepository.register(
         username: event.username,
         email: event.email,
         password: event.password,
         displayName: event.displayName
       );
-      emit(AuthRegisterSuccess());
+      emit(AuthRegisterSuccess(registerRes: registerRes));
     } catch (e) {
       if (e is ServerException) {
+        logger.e(e.message);
         emit(AuthFailure(e.message));
       } else {
         emit(AuthFailure('An unexpected error occurred'));
