@@ -92,14 +92,13 @@ class _ChatScreenState extends State<ChatScreen> {
       }
     };
 
-    // ✅ Sửa: Xử lý cuộc gọi đến
     context.read<WebSocketService>().onIncomingCall = (from, conversationId) {
       if (conversationId == widget.conversationId && from == widget.chatPartner) {
         _handleIncomingCall(from, conversationId);
       }
     };
   }
-  // ✅ Sửa: Xử lý cuộc gọi đến đúng cách
+
   void _handleIncomingCall(String from, String conversationId) {
     showDialog(
       context: context,

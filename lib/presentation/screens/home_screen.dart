@@ -1,3 +1,5 @@
+import 'package:chat_message_websocket/data/repositories/auth_repository.dart';
+import 'package:chat_message_websocket/logic/blocs/profile/profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_message_websocket/data/repositories/user_repository.dart';
@@ -11,6 +13,7 @@ import 'package:chat_message_websocket/logic/blocs/contact/contact_bloc.dart';
 import 'package:chat_message_websocket/presentation/screens/conversation_list_screen.dart';
 import 'package:chat_message_websocket/presentation/screens/user_profile_screen.dart';
 import '../../logic/blocs/conversation/conversation_event.dart';
+import '../../services/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -58,7 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
             return Scaffold(
               body: [
                 ConversationListScreen(currentUser: currentUser),
-                UserProfileScreen(currentUser: currentUser),
+                BlocProvider(
+                  create: (context) => ProfileBloc(
+                    repository: AuthRepository(), webSocket: context.read<WebSocketService>()
+                  ),
+                  child: UserProfileScreen(currentUser: currentUser),
+                ),
               ][_selectedIndex],
               bottomNavigationBar: Container(
                 decoration: BoxDecoration(
@@ -110,5 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
 }
 

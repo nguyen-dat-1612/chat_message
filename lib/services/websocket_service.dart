@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:chat_message_websocket/core/utils/logger.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -9,7 +12,30 @@ import '../data/models/user_status.dart';
 
 class WebSocketService {
   WebSocketChannel? _channel;
+  late final Connectivity _connectivity;
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
+  bool _isConnected = false;
+  bool _manuallyDisconnected = false;
+  bool _isReconnecting = false;
+
   late String username;
+
+  WebSocketService() {
+    _connectivity = Connectivity();
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_handleNetworkChange);
+  }
+
+  void _handleNetworkChange(ConnectivityResult result) {
+    if (result != ConnectivityResult.none && !_isConnected && !_manuallyDisconnected) {
+      print('[🌐] Network back - trying to reconnect WebSocket');
+      connect(username);
+    }
+    if (result == ConnectivityResult.none && _isConnected) {
+      print('[🚫] Lost network - closing WebSocket');
+      disconnect();
+    }
+  }
 
   // ==== Callback dành cho phần chat (tin nhắn, trạng thái, typing, cuộc gọi) ====
   void Function(Message)? onMessage; // Khi nhận tin nhắn mới
@@ -25,18 +51,46 @@ class WebSocketService {
 
   /// Kết nối đến WebSocket server
   Future<void> connect(String username) async {
+    if (_isConnected) return;
+
     this.username = username;
     try {
       _channel = IOWebSocketChannel.connect(Uri.parse('$baseSocket?username=$username'));
+      _isConnected = true;
+      _manuallyDisconnected = false;
 
-      _channel!.stream.listen(_handleData, onError: (err) {
-        print('Thanh Dat: ❌ Lỗi WebSocket: $err');
-      }, onDone: () {
-        print('Thanh Dat: 🔌 Kết nối WebSocket đã đóng');
-      });
+      _channel!.stream.listen(
+          _handleData,
+          onDone: _onDisconnected,
+          onError: (err) => _onDisconnected()
+      );
     } catch (e) {
-      print('Thanh Dat: ❌ Không thể kết nối WebSocket: $e');
+      logger.e('❌ Lỗi kết nối WebSocket: $e');
+      throw(Exception(e));
     }
+  }
+
+  void disconnect() {
+    _manuallyDisconnected = true;
+    _channel?.sink.close();
+    _isConnected = false;
+    _channel = null;
+  }
+
+  void _onDisconnected() {
+    _isConnected = false;
+    if (!_manuallyDisconnected && !_isReconnecting) {
+      _tryReconnect();
+    }
+  }
+
+  void _tryReconnect() async {
+    _isReconnecting = true;
+    await Future.delayed(Duration(seconds: 3));
+    if (!_isConnected) {
+      await connect(username);
+    }
+    _isReconnecting = false;
   }
 
   /// Xử lý dữ liệu nhận được từ WebSocket
@@ -242,12 +296,6 @@ class WebSocketService {
     }));
   }
 
-  /// Đóng kết nối WebSocket
-  void disconnect() {
-    _channel?.sink.close();
-    _channel = null;
-  }
-
   /// Kiểm tra trạng thái kết nối
-  bool get isConnected => _channel != null;
+  bool get isConnected => _isConnected;
 }

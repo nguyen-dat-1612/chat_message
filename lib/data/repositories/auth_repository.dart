@@ -124,7 +124,7 @@ class AuthRepository {
       final prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString('accessToken');
       final response = await http.post(
-        Uri.parse('$baseUrl/logout'),
+        Uri.parse('$baseUrl/auth/logout'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',

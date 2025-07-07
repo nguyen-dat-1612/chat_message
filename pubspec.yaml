@@ -51,6 +51,7 @@ dependencies:
   flutter_webrtc: ^0.10.8
   permission_handler: ^11.0.1
   logger: ^2.0.2
+  connectivity_plus: ^5.0.2
 
 dev_dependencies:
   flutter_test:

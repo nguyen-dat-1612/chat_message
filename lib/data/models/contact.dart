@@ -17,7 +17,7 @@ class Contact {
   factory Contact.fromJson(Map<String, dynamic> json) {
     return Contact(
       id: json['_id'] ?? json['id'],
-      user: SimpleUser.fromJson(json['home']),
+      user: SimpleUser.fromJson(json['user']),
       nickname: json['nickname'] ?? '',
       addedAt: DateTime.parse(json['addedAt']),
     );
